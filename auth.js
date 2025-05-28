@@ -1,7 +1,14 @@
 // Check if user is authenticated
 window.onload = function() {
-    // Only check authentication for the main entry point (index.html)
-    if (window.location.pathname.endsWith('index.html') && !sessionStorage.getItem('isAuthenticated')) {
+    // List of pages to protect
+    const protectedPages = [
+        'index.html',
+        'events.html',
+        'gallery.html',
+        'rsvp.html'
+    ];
+    const currentPage = window.location.pathname.split('/').pop();
+    if (protectedPages.includes(currentPage) && !sessionStorage.getItem('isAuthenticated')) {
         window.location.href = 'login.html';
     }
 } 
