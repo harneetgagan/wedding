@@ -372,6 +372,95 @@
         padding: 0;
       }
     }
+
+    /* Enhanced RSVP form styles */
+    #customRSVP {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(212, 65, 142, 0.10);
+      padding: 40px 32px;
+      max-width: 480px;
+      margin: 0 auto;
+      border: 1px solid rgba(212, 65, 142, 0.10);
+    }
+    #customRSVP label {
+      font-size: 20px;
+      color: var(--primary);
+      font-family: var(--font-display);
+      margin-bottom: 8px;
+    }
+    #customRSVP input, #customRSVP select, #customRSVP textarea {
+      font-size: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 2px solid var(--primary-light);
+      background: #fff;
+      margin-top: 6px;
+      margin-bottom: 2px;
+      font-family: var(--font-body);
+      transition: border-color 0.3s;
+    }
+    #customRSVP input:focus, #customRSVP select:focus, #customRSVP textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    #customRSVP button {
+      background: linear-gradient(135deg, var(--primary), #FF6B6B);
+      color: #fff;
+      font-size: 22px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      border: none;
+      border-radius: 100px;
+      padding: 16px 0;
+      margin-top: 16px;
+      box-shadow: 0 4px 16px rgba(212, 65, 142, 0.10);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    #customRSVP button:hover {
+      background: linear-gradient(135deg, #FF6B6B, var(--primary));
+      transform: translateY(-2px) scale(1.03);
+    }
+    /* Thank you message styling */
+    #rsvp-success {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 350px;
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--primary);
+      background: rgba(255,255,255,0.97);
+      border-radius: 32px;
+      box-shadow: 0 8px 32px rgba(212, 65, 142, 0.10);
+      margin: 40px auto 0 auto;
+      max-width: 600px;
+      padding: 48px 32px 40px 32px;
+      text-align: center;
+      animation: popIn 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    #rsvp-success .checkmark {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 24px;
+      display: inline-block;
+      animation: bounceIn 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      80% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -393,23 +482,67 @@
   </header>
 
   <div class="container">
-    <div class="form-card no-bg">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScANvScEM8COTB6tooE__Ww8uBmHuNhxFf-NF92g-WbVW9I-g/viewform?embedded=true" width="640" height="1115" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <div class="form-card no-bg"><form id="customRSVP">
+      <label>
+        Name:
+        <input type="text" name="entry.1374930133" required>
+      </label>
+      <label>
+        Phone Number:
+        <input type="tel" name="entry.1440913696" id="phoneInput" placeholder="###-###-####" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+        <div id="phoneError" style="display:none;color:#D4418E;font-size:1rem;margin-top:4px;font-family:var(--font-display);">Please enter a valid phone number (###-###-####).</div>
+      </label>
+      <label>
+        Number of Guests:
+        <input type="number" name="entry.1302052887" required>
+      </label>
+      <label>
+        Event Attending:
+        <select name="entry.1591546350" required>
+          <option value="Sangeet">Sangeet</option>
+          <option value="Viah">Viah</option>
+          <option value="Both">Both</option>
+        </select>
+      </label>
+      <label>
+        Message (optional):
+        <textarea name="entry.727333120"></textarea>
+      </label>
+      <button type="submit">RSVP</button>
+    </form>
+    <div id="rsvp-success" style="display:none;">
+      <span class="checkmark">
+        <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="25" fill="#D4418E22"/><path fill="none" stroke="#D4418E" stroke-width="5" d="M14 27l7 7 17-17"/></svg>
+      </span>
+      <div>Thank you for your RSVP!<br>We can't wait to celebrate with you 🎉</div>
     </div>
-  </div>
-
-  <div id="success-message" class="success-message">
-    Thank you for your RSVP! We can't wait to celebrate with you 🎉
-  </div>
 
   <script src="auth.js"></script>
   <script>
-    document.getElementById('rsvp-form').addEventListener('submit', function(event) {
-      const message = document.getElementById('success-message');
-      message.classList.add('show');
-      setTimeout(() => {
-        message.classList.remove('show');
-      }, 5000);
+    document.getElementById('customRSVP').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var form = e.target;
+      var data = new FormData(form);
+      // Phone validation
+      var phone = document.getElementById('phoneInput').value.trim();
+      var phoneError = document.getElementById('phoneError');
+      var phonePattern = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+      if (phone && !phonePattern.test(phone)) {
+        phoneError.style.display = 'block';
+        document.getElementById('phoneInput').focus();
+        return;
+      } else {
+        phoneError.style.display = 'none';
+      }
+      fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLScANvScEM8COTB6tooE__Ww8uBmHuNhxFf-NF92g-WbVW9I-g/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: data
+      }).then(() => {
+        form.style.display = 'none';
+        document.getElementById('rsvp-success').style.display = 'block';
+        localStorage.setItem('rsvped', 'true');
+      });
     });
   </script>
 </body>
