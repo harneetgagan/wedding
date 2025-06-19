@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Events - Our Wedding</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #D4418E;
@@ -17,6 +18,7 @@
       --font-cursive: 'Great Vibes', cursive;
       --font-display: 'Playfair Display', serif;
       --font-body: 'Cormorant Garamond', serif;
+      --font-bubbly: 'Quicksand', sans-serif;
     }
 
     * {
@@ -132,19 +134,47 @@
     }
 
     nav a {
-      color: var(--text);
+      color: transparent;
+      background: linear-gradient(90deg, #ff5eae 0%, #ffb6e6 50%, #f7c6ff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       text-decoration: none;
       margin: 0 1.5rem;
       font-size: 1rem;
       font-family: var(--font-display);
       font-weight: 500;
-      transition: color 0.3s ease;
-      opacity: 0.8;
+      position: relative;
+      transition: color 0.3s, transform 0.2s;
+      opacity: 0.95;
     }
 
-    nav a:hover {
-      color: var(--primary);
+    nav a::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff5eae 0%, #ffb6e6 50%, #f7c6ff 100%);
+      border-radius: 2px;
+      transition: width 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+      margin: 0 auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+    }
+
+    nav a:hover, nav a:focus {
+      color: #ff5eae;
+      background: none;
+      -webkit-text-fill-color: #ff5eae;
       opacity: 1;
+      transform: scale(1.08);
+    }
+
+    nav a:hover::after, nav a:focus::after {
+      width: 100%;
+      background: #ff5eae;
     }
 
     .page-header {
@@ -163,11 +193,12 @@
       font-size: 64px;
       line-height: 1.2;
       font-weight: 400;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
       background: linear-gradient(135deg, var(--primary), #FF6B6B);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 8px #ffe3f0;
     }
 
     .container {
@@ -210,24 +241,22 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     }
 
-    .event-card h2 {
-      font-family: var(--font-display);
-      font-size: 32px;
-      line-height: 1.2;
-      font-weight: 600;
-      letter-spacing: 0.01em;
+    .event-card h2,
+    .path-title {
+      font-family: var(--font-cursive);
+      font-size: 40px;
       color: var(--primary);
-      margin-bottom: 12px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 8px #ffe3f0;
     }
 
     .event-time {
-      font-family: var(--font-body);
-      font-size: 20px;
-      line-height: 1.47059;
+      font-family: var(--font-bubbly);
+      font-size: 22px;
+      color: var(--text-secondary);
       font-weight: 400;
       letter-spacing: 0.01em;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
     }
 
     .event-details {
@@ -239,21 +268,17 @@
     }
 
     .event-location {
-      font-family: var(--font-display);
+      font-family: var(--font-bubbly);
       font-size: 20px;
-      line-height: 1.47059;
+      color: var(--text);
       font-weight: 500;
       letter-spacing: 0.01em;
-      color: var(--primary);
-      flex: 1;
     }
 
     .event-schedule {
       font-family: var(--font-display);
       font-size: 18px;
-      line-height: 1.8;
       color: var(--text-secondary);
-      flex: 1;
     }
 
     .event-schedule-item {
@@ -268,27 +293,22 @@
       font-family: var(--font-cursive);
       font-size: 22px;
       color: var(--primary);
-      flex: 1;
+      font-weight: 400;
     }
 
     .event-schedule-item time {
-      font-family: var(--font-display);
+      font-family: var(--font-bubbly);
       font-size: 20px;
       color: var(--text);
-      font-weight: 500;
+      font-weight: 400;
       text-align: right;
       min-width: 80px;
     }
 
-    .event-schedule-item:last-child {
-      margin-top: 20px;
-      margin-bottom: 0;
-      font-style: italic;
-      font-family: var(--font-cursive);
+    .event-schedule-item:last-child span {
       font-size: 24px;
       color: var(--primary);
-      text-align: center;
-      justify-content: center;
+      font-style: italic;
     }
 
     .event-description {
@@ -297,6 +317,7 @@
       font-size: 18px;
       line-height: 1.6;
       color: var(--text-secondary);
+      font-weight: 400;
     }
 
     @keyframes fadeUp {
@@ -317,57 +338,94 @@
       }
 
       .page-header {
-        padding: 100px 0 32px;
-        margin: 40px 20px 0;
+        padding: 60px 0 20px;
+        margin: 24px 8px 0;
+        text-align: center;
       }
 
       .page-header h1 {
-        font-size: 48px;
+        font-size: 36px;
+        text-align: center;
       }
 
       .event-card {
-        padding: 24px;
+        padding: 14px 8px 18px 8px;
+        border-radius: 14px;
+        margin: 0 0 18px 0;
+        max-width: 98vw;
+        width: 100%;
+        text-align: center;
       }
 
-      .event-card h2 {
-        font-size: 28px;
+      .event-card h2, .path-title {
+        font-size: 22px;
+        text-align: center;
       }
 
       .event-time, .event-location {
-        font-size: 18px;
+        font-size: 15px;
+        text-align: center;
       }
 
       .event-description {
-        font-size: 16px;
+        font-size: 14px;
+        text-align: center;
       }
 
       .event-details {
         flex-direction: column;
-        gap: 24px;
+        gap: 14px;
+        align-items: center;
       }
 
       .event-schedule-item {
         flex-direction: column;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
         text-align: center;
       }
 
       .event-schedule-item span {
-        font-size: 20px;
-        margin-bottom: 4px;
+        font-size: 16px;
+        margin-bottom: 2px;
         text-align: center;
       }
 
       .event-schedule-item time {
-        font-size: 18px;
+        font-size: 15px;
         color: var(--text-secondary);
         text-align: center;
         min-width: auto;
       }
 
-      .event-schedule-item:last-child {
-        font-size: 22px;
+      .event-schedule-item:last-child span {
+        font-size: 18px;
       }
+    }
+
+    /* Path event custom styles */
+    .path-event {
+      background: linear-gradient(135deg, #fff6fa 60%, #f9f6ff 100%);
+      border: 1.5px solid #f7d6e6;
+      box-shadow: 0 4px 24px rgba(212, 65, 142, 0.07);
+    }
+    .path-event .event-time,
+    .path-event .event-location,
+    .path-event .event-schedule-item span,
+    .path-event .event-schedule-item time {
+      font-family: var(--font-bubbly);
+      color: var(--text);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    .path-event .event-schedule-item span {
+      font-family: var(--font-cursive);
+      font-size: 22px;
+      color: var(--primary);
+    }
+    .path-event .event-schedule-item:last-child span {
+      font-size: 24px;
+      color: var(--primary);
+      font-style: italic;
     }
   </style>
 </head>
@@ -382,8 +440,6 @@
     <a href="index.html">Home</a>
     <a href="events.html">Events</a>
     <a href="gallery.html">Gallery</a>
-    <a href="rsvp.html">RSVP</a>
-    
   </nav>
 
   <header class="page-header">
@@ -392,6 +448,39 @@
 
   <div class="container">
     <div class="events-grid">
+      <div class="event-card path-event">
+        <h2 class="path-title">Path</h2>
+        <div class="event-time">Saturday, June 21, 2025</div>
+        <div class="event-details">
+          <div class="event-location">
+            JASWAL RESIDENCE<br>
+            9988 Wintercrest Dr<br>
+            Ashland, VA
+          </div>
+          <div class="event-schedule">
+            <div class="event-schedule-item">
+              <span>Breakfast</span>
+              <time>9:30 AM</time>
+            </div>
+            <div class="event-schedule-item">
+              <span>Path da Bhog</span>
+              <time>10:00 AM</time>
+            </div>
+            <div class="event-schedule-item">
+              <span>Kirtan</span>
+              <time>11:00 AM</time>
+            </div>
+            <div class="event-schedule-item">
+              <span>Ardaas</span>
+              <time>1:00 PM</time>
+            </div>
+            <div class="event-schedule-item">
+              <span>Followed by Guru ka Langar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="event-card">
         <h2>Sangeet</h2>
         <div class="event-time">June 22, 2025 • 6:00 PM to 11:00 PM</div>

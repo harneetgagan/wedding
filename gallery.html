@@ -115,19 +115,47 @@
     }
 
     nav a {
-      color: var(--text);
+      color: transparent;
+      background: linear-gradient(90deg, #ff5eae 0%, #ffb6e6 50%, #f7c6ff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       text-decoration: none;
       margin: 0 1.5rem;
       font-size: 1rem;
       font-family: var(--font-display);
       font-weight: 500;
-      transition: color 0.3s ease;
-      opacity: 0.8;
+      position: relative;
+      transition: color 0.3s, transform 0.2s;
+      opacity: 0.95;
     }
 
-    nav a:hover {
-      color: var(--primary);
+    nav a::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff5eae 0%, #ffb6e6 50%, #f7c6ff 100%);
+      border-radius: 2px;
+      transition: width 0.3s cubic-bezier(.68,-0.55,.27,1.55);
+      margin: 0 auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+    }
+
+    nav a:hover, nav a:focus {
+      color: #ff5eae;
+      background: none;
+      -webkit-text-fill-color: #ff5eae;
       opacity: 1;
+      transform: scale(1.08);
+    }
+
+    nav a:hover::after, nav a:focus::after {
+      width: 100%;
+      background: #ff5eae;
     }
 
     .page-header {
@@ -287,8 +315,6 @@
     <a href="index.html">Home</a>
     <a href="events.html">Events</a>
     <a href="gallery.html">Gallery</a>
-    <a href="rsvp.html">RSVP</a>
-    
   </nav>
 
   <header class="page-header">
